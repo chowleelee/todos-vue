@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<link rel="stylesheet" href="css/app.css">
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="todoapp" v-cloak>
+			<header class="header">
+				<h1>todos</h1>
+				<input class="new-todo" @keyup.enter="submit" v-model="text" placeholder="What needs to be done?" autofocus>
+			</header>
+			<section class="main">
+				<input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
+				<label for="toggle-all" v-show="todoList.length">Mark all as complete</label>
+				<ul class="todo-list" v-show="todoList.length">
+					<li v-for="item in filteredTodoList" v-bind:class="{completed: item.completed, editing: item == editedItem}">
+						<div class="view">
+							<input class="toggle" type="checkbox" v-model="item.completed">
+							<label v-on:dblclick="edit(item)">{{item.content}}</label>
+							<button class="destroy" v-on:click="remove(item)"></button>
+						</div>
+						<input class="edit" v-model="item.content" v-on:blur="doneEdit(item)" @keyup.enter="doneEdit(item)" v-to-focus="item == editedItem">
+					</li>
+				</ul>
+			</section>
+			<footer class="footer" v-show="todoList.length">
+				<span class="todo-count"><strong>{{unDone}}</strong> {{unDone > 1 ? 'items': 'item'}} left</span>
+				<ul class="filters">
+					<li>
+						<a href="#/" v-bind:class="{selected: visibility == 'all'}" v-on:click="tab('all')">All</a>
+					</li>
+					<li>
+						<a href="#/active" v-bind:class="{selected: visibility == 'active'}" v-on:click="tab('active')">Active</a>
+					</li>
+					<li>
+						<a href="#/completed" v-bind:class="{selected: visibility == 'completed'}" v-on:click="tab('completed')">Completed</a>
+					</li>
+				</ul>
+				<button class="clear-completed" v-show="todoList.length > unDone" v-on:click="removeDone">Clear completed</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+			<p>Created by <a href="http://todomvc.com">you</a></p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="node_modules/vue/dist/vue.js"></script>
+		<script src="node_modules/store.js/store.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
